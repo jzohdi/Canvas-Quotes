@@ -8,7 +8,7 @@ function tweet(message) {
 
 var msg;
 function tweetHandler() {
-    tweet(document.querySelector('#text').text() + document.querySelector('#author').text());
+    tweet(document.getElementById('#text').text() + document.getElementById('#author').text());
 
 }
 
