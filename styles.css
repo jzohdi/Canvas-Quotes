@@ -1,16 +1,432 @@
-html, body, #map-canvas, .container-fluid
+html, body
 {
     /* height of these elements */
-    height: 100%;
+    /* height: 100%; */
 
     /* no margin around these elements */
-    margin: 0;
-
+    /* margin-left: -100px; */
+    width: 100%;
     /* disable scrollbars */
     overflow: hidden;
-
+    height: 100%;
     /* no padding within these elements */
     padding: 0;
-
-    font-size: 40px;
+    /* transform: translate(-50%, 0); */
+    /* font-size: 20px; */
+    color: grey;
 }
+.u-relative { position: relative; z-index: 1; }
+@media only screen and (max-width: 600px) {
+  #text{
+    font-size: 12px;
+    height: 75%;
+  }
+  #quote-box{
+/*     margin-top: 10px !important; */
+    width: 80% !important;
+    transform: translate(10%, 5%) !important;
+    height: 90% !important;
+  }
+}
+
+#quote-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 15px 15px 10vh 15px;
+  margin-top: 0px;
+  height: 50%;
+}
+
+#text, #author {
+  font-family: 'Arial';
+  font-weight: 600;
+}
+@media only screen and (min-width: 600px) {
+  #text{
+    font-size: 20px;
+    height: 90%;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  #quote-box{
+    width: 50%;
+    transform: translate(50%, 40%);
+  }
+}
+@media only screen and (min-width: 700px) and (max-width: 1000px) {
+  #quote-box{
+    width: 70%;
+    transform: translate(20%, 30%);
+  }
+}
+@media only screen and (min-width: 500px) and (max-width: 700px) {
+  #quote-box{
+    width: 80%;
+    transform: translate(10%, 30%);
+  }
+}
+@media only screen and (max-width: 500px){
+  #quote-box{
+    width: 90%;
+    transform: translate(5%, 30%);
+  }
+}
+
+@media only screen and (max-width: 390px){
+  .button{
+    font-size:10px;
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 390px){
+  .button{
+    font-size:16px;
+    width: 49%;
+  }
+
+}
+#title{
+    font-family: Verdana, Geneva, sans-serif;
+    text-align: center;
+    color: white;
+  }
+.button{
+  background-color: rgb(112, 127, 223);
+  hieght: 100%;
+  text-align: center;
+  border: none;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+   border-radius: 20px;
+  -webkit-transition-duration: 0.8s; /* Safari */
+  transition-duration: 0.8s;
+}
+/* #tweetQuote{
+  background-color: rgb(112, 127, 223);
+  hieght: 100%;
+  text-align: center;
+  border: none;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+   border-radius: 20px;
+  -webkit-transition-duration: 0.8s; /* Safari */
+/*   transition-duration: 0.8s;
+}
+#tweetQuote:hover{
+  background-color: rgba(0, 0, 0, 0.6);
+} */
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+/*     color: rgba(215, 83, 227, 0.7); */
+}
+a:hover{
+  text-decoration: none;
+  color: white;
+}
+.button-box {
+  margin-top: 30px;
+    position: relative;
+}
+/* #line-one-0 div{
+
+}
+.line-one-a {
+  transition: transform 10000ms;
+}
+
+.line-one-b {
+  transform: translate(130%, 0);
+} */
+/* .container-fluid{
+  height: 20px;
+} */
+/* @media only screen and (min-width: 800px) and (max-width: 1100px){
+
+} */
+/* .moveMe-right1 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-right: 100%;
+  animation: moveMe-right1 20s infinite linear;
+  position: absolute;
+  right: 10%;
+}
+
+.moveTwo1-right {
+  animation-delay: 10s;
+
+}
+
+.moveMe-right3 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-right: 100%;
+  animation: moveMe-right3 20s infinite linear;
+  position: absolute;
+  right: 10%;
+}
+
+.moveTwo3-right {
+  animation-delay: 10s;
+
+}
+.moveMe-right5 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-right: 100%;
+  animation: moveMe-right5 20s infinite linear;
+  position: absolute;
+  right: 10%;
+}
+
+.moveTwo5-right {
+  animation-delay: 10s;
+
+}
+.moveMe-right7 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-right: 100%;
+  animation: moveMe-right7 20s infinite linear;
+  position: absolute;
+  right: 10%;
+}
+
+.moveTwo7-right {
+  animation-delay: 10s;
+
+} */
+/* @keyframes moveMe-right {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(110%, 0);
+  }
+} */
+/* .moveMe1 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe1 20s infinite linear;
+  position: absolute;
+}
+
+.moveTwo1 {
+  animation-delay: 10s;
+}
+
+@keyframes moveMe1 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+} */
+
+/* .moveMe2 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe2 26s infinite linear;
+  position: absolute;
+}
+.moveTwo2{
+  animation-delay: 13s;
+} */
+
+/* @keyframes moveMe2 {
+  0% {
+    transform: translate(0, 20px);
+  }
+  100% {
+    transform: translate(-100%, 20px);
+  }
+} */
+/* .moveMe3 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe3 28s infinite linear;
+  position: absolute;
+}
+.moveTwo3{
+  animation-delay: 14s;
+}
+
+@keyframes moveMe3 {
+  0% {
+    transform: translate(0, 40px);
+  }
+  100% {
+    transform: translate(-100%, 40px);
+  }
+} */
+/* .moveMe4 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe4 22s infinite linear;
+  position: absolute;
+}
+.moveTwo4{
+  animation-delay: 11s;
+} */
+
+/* @keyframes moveMe4 {
+  0% {
+    transform: translate(0, 60px);
+  }
+  100% {
+    transform: translate(-100%, 60px);
+  }
+} */
+/* .moveMe5 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe5 24s infinite linear;
+  position: absolute;
+}
+.moveTwo5{
+  animation-delay: 12s;
+}
+
+@keyframes moveMe5 {
+  0% {
+    transform: translate(0, 80px);
+  }
+  100% {
+    transform: translate(-100%, 80px);
+  }
+} */
+/* .moveMe6 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe6 28s infinite linear;
+  position: absolute;
+}
+.moveTwo6{
+  animation-delay: 14s;
+} */
+
+/* @keyframes moveMe6 {
+  0% {
+    transform: translate(0, 100px);
+  }
+  100% {
+    transform: translate(-100%, 100px);
+  }
+} */
+/* .moveMe7 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe7 26s infinite linear;
+  position: absolute;
+}
+.moveTwo7{
+  animation-delay: 13s;
+}
+
+@keyframes moveMe7 {
+  0% {
+    transform: translate(0, 120px);
+  }
+  100% {
+    transform: translate(-100%, 120px);
+  }
+} */
+/* .moveMe8 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe8 30s infinite linear;
+  position: absolute;
+}
+.moveTwo8{
+  animation-delay: 15s;
+} */
+
+/* @keyframes moveMe8 {
+  0% {
+    transform: translate(0, 140px);
+  }
+  100% {
+    transform: translate(-100%, 140px);
+  }
+} */
+/* .moveMe9 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe9 20s infinite linear;
+  position: absolute;
+}
+.moveTwo9{
+  animation-delay: 10s;
+} */
+
+/* @keyframes moveMe9 {
+  0% {
+    transform: translate(0, 180px);
+  }
+  100% {
+    transform: translate(-100%, 180px);
+  }
+}
+.moveMe10 {
+  margin: 0 auto;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  padding-left: 100%;
+  animation: moveMe10 26s infinite linear;
+  position: absolute;
+}
+.moveTwo10{
+  animation-delay: 13s;
+}
+
+@keyframes moveMe10 {
+  0% {
+    transform: translate(0, 160px);
+  }
+  100% {
+    transform: translate(-100%, 160px);
+  }
+} */
