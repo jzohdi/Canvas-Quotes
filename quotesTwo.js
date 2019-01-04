@@ -58,6 +58,11 @@ function getSize(leng) {
 var sizeToAdd;
 var pixelsDown = [0, 0];
 var countRows = 1;
+function quoteReady(newQuote) {
+  console.log(newQuote);
+  quote = newQuote.quote.replace(/<(?:.|\n)*?>/gm, "");
+  author = newQuote.titles.replace(/<(?:.|\n)*?>/gm, "");
+}
 // var quoteAPItwo = "https://quotes.rest/quote/random.json";
 var WikiquoteApi = (function() {
   var wqa = {};
@@ -283,7 +288,7 @@ function loadQuotes(howManyRows) {
         });
       },
       function(msg) {
-        console.log(msg);
+        console.log("message: " + msg);
       }
     );
 
