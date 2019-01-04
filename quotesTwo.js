@@ -89,17 +89,19 @@ function loadQuotes(stopHeight) {
 
   // for (var currentRow = 1; currentRow <= totalRows; currentRow++)
   while (currentHeight <= stopHeight + 20) {
-    initHTML(countRows);
-    initCSS(countRows);
-    init(countRows);
+    const whichDirection = Math.random() > 0.5 ? "left" : "right";
+
     const newQuoteString = getRandomQuoteString();
 
     const quoteLength = newQuoteString.length;
 
     if (quoteLength <= 188 && quoteLength >= 60) {
+      initHTML(countRows);
+      initCSS(countRows, whichDirection);
+      init(countRows, whichDirection);
       const sizeToAdd = getSize(quoteLength);
       // console.log("currernt height: ", window.currentHeight);
-      if (window.countRows % 2 == 1) {
+      if (whichDirection == "right") {
         const cssText = replaceEach(MOVE_RIGHT_CSS, [
           ["rowNum", countRows],
           ["sizeToAdd", sizeToAdd],
@@ -109,7 +111,7 @@ function loadQuotes(stopHeight) {
         $("#row" + countRows).html(newQuoteString);
         //     // console.log(countRows.toString())
         $("#row" + countRows + "b").html(newQuoteString);
-      } else if (window.countRows % 2 == 0) {
+      } else {
         const cssText = replaceEach(MOVE_LEFT_CSS, [
           ["rowNum", countRows],
           ["sizeToAdd", sizeToAdd],
@@ -138,11 +140,11 @@ const HTML_LEFT =
   "<div class='container-fluid'><span id='rownum' class='moveMenum sizenum'></span><span id='row" +
   "numb' class='moveMenum  moveTwonum sizenum'></span></div>";
 
-function init(pageRow) {
+function init(pageRow, whichDirection) {
   // for (var rowcount = 1; rowcount <= pageRows; rowcount++) {
   var num = pageRow.toString();
   var bodyDoc = $("#init" + num);
-  if (pageRow % 2 == 1) {
+  if (whichDirection == "right") {
     const htmlForRight = replaceEach(HTML_RIGHT, [["num", num]]);
     bodyDoc.html(htmlForRight);
   } else {
@@ -160,11 +162,11 @@ const LEFT_STYLE =
   " { margin: 0 auto; white-space: nowrap; display: inline-block; overflow: hidden; padding-left: 100%; animation: moveMe" +
   "numb 26s infinite linear; position: absolute; } .moveTwonumb{ animation-delay: 13s; }";
 
-function initCSS(styleNum) {
+function initCSS(styleNum, whichDirection) {
   var docStyle = $("#css");
   // for (var style = 1; style <= styleNum; style++) {
   var numb = styleNum.toString();
-  if (styleNum % 2 == 1) {
+  if (whichDirection == "right") {
     const addStyle = replaceEach(RIGHT_STYLE, [["numb", numb]]);
     docStyle.append(addStyle);
   } else {
@@ -197,26 +199,3 @@ if (
 }
 // insert(initrows);
 loadQuotes(heightOfPage);
-// .moveMe-right1 { margin: 0 auto; white-space: nowrap; display: inline-block; overflow: hidden; padding-right: 100%; animation: moveMe-right1 20s infinite linear; position: absolute; right: 10%; }
-
-// .moveTwo1-right { animation-delay: 10s; }
-
-// .moveMe2 { margin: 0 auto; white-space: nowrap; display: inline-block; overflow: hidden; padding-left: 100%; animation: moveMe2 26s infinite linear; position: absolute; } .moveTwo2{ animation-delay: 13s; }
-
-// <div class='container-fluid'><span id='row1' class='moveMe-right1 size1'></span><span id='row1b' class='moveMe-right1 moveTwo1-right size1'></span></div>
-// <div class='container-fluid'><span id='row2' class='moveMe2 size2'></span><span id='row2b' class='moveMe2 moveTwo2 size2'></span></div>
-// loadQuotes(pageRows);
-
-// document.addEventListener('DOMContentLoaded', function() {
-//
-// });
-
-// function animate(){
-//   requestAnimationFrame(animate);
-//   cb.clearRect(0, 0, innerWidth, innerHeight);
-//   for (var x = 0; x < quotes.length; x++){
-//     quotes[x].update();
-//   }
-//
-// }
-// animate();
