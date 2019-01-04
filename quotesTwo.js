@@ -1,3 +1,26 @@
+const heightOfPage = window.innerHeight;
+const MAX_QUOTE_INDEX = all_quotes.length;
+window.random = false;
+const API_TAG =
+  '<pre style="word-wrap: break-word; white-space: pre-wrap;">placeholder</pre>';
+
+const detectURI = () => {
+  const index = location.href.indexOf("?");
+  if (index != -1) {
+    const url = location.href.slice(index + 2);
+    if (url === "random") {
+      const randomQuote = JSON.stringify(
+        all_quotes[randomIntRange(0, MAX_QUOTE_INDEX)]
+      );
+      $("head").empty();
+      $("body").empty();
+      $("body").append(API_TAG.replace("placeholder", randomQuote));
+      window.random = true;
+    }
+  }
+};
+
+detectURI();
 function randomIntRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -71,8 +94,7 @@ function getSize(leng) {
 }
 
 window.currentHeight = 0;
-const heightOfPage = window.innerHeight;
-const MAX_QUOTE_INDEX = all_quotes.length;
+
 window.countRows = 1;
 
 const MOVE_RIGHT_CSS =
@@ -198,4 +220,6 @@ if (
   initrows = 25;
 }
 // insert(initrows);
-loadQuotes(heightOfPage);
+if (!window.random) {
+  loadQuotes(heightOfPage);
+}
