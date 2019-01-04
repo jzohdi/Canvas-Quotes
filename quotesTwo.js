@@ -58,7 +58,214 @@ function getSize(leng) {
 var sizeToAdd;
 var pixelsDown = [0, 0];
 var countRows = 1;
-var quoteAPItwo = "http://quotes.rest/quote/random.json";
+// var quoteAPItwo = "https://quotes.rest/quote/random.json";
+var WikiquoteApi = (function() {
+  var wqa = {};
+
+  var API_URL = "https://en.wikiquote.org/w/api.php";
+
+  wqa.queryTitles = function(titles, success, error) {
+    $.ajax({
+      url: API_URL,
+      dataType: "jsonp",
+      data: {
+        format: "json",
+        action: "query",
+        redirects: "",
+        titles: titles
+      },
+
+      success: function(result, status) {
+        var pages = result.query.pages;
+        var pageId = -1;
+        for (var p in pages) {
+          var page = pages[p];
+          if (!("missing" in page)) {
+            pageId = page.pageid;
+            break;
+          }
+        }
+        if (pageId > 0) {
+          success(pageId);
+        } else {
+          error("No results");
+        }
+      },
+
+      error: function(xhr, result, status) {
+        error("Error processing your query");
+      }
+    });
+  };
+
+  wqa.queryRandomTitle = function(success, error) {
+    $.ajax({
+      url: API_URL,
+      dataType: "jsonp",
+      data: {
+        format: "json",
+        action: "query",
+        redirects: "",
+        list: "random",
+        rnnamespace: "0"
+      },
+
+      success: function(result, status) {
+        var title = result.query.random[0].title;
+        if (title !== undefined) {
+          success(title);
+        } else {
+          error("No results");
+        }
+      },
+
+      error: function(xhr, result, status) {
+        error("Error processing your query");
+      }
+    });
+  };
+
+  wqa.getSectionsForPage = function(pageId, success, error) {
+    $.ajax({
+      url: API_URL,
+      dataType: "jsonp",
+      data: {
+        format: "json",
+        action: "parse",
+        prop: "sections",
+        pageid: pageId
+      },
+
+      success: function(result, status) {
+        var sectionArray = [];
+        var sections = result.parse.sections;
+        for (var s in sections) {
+          var splitNum = sections[s].number.split(".");
+          if (splitNum.length > 1 && splitNum[0] === "1") {
+            sectionArray.push(sections[s].index);
+          }
+        }
+        if (sectionArray.length === 0) {
+          sectionArray.push("1");
+        }
+        success({ titles: result.parse.title, sections: sectionArray });
+      },
+      error: function(xhr, result, status) {
+        error("Error getting sections");
+      }
+    });
+  };
+
+  wqa.getQuotesForSection = function(pageId, sectionIndex, success, error) {
+    $.ajax({
+      url: API_URL,
+      dataType: "jsonp",
+      data: {
+        format: "json",
+        action: "parse",
+        noimages: "",
+        pageid: pageId,
+        section: sectionIndex
+      },
+
+      success: function(result, status) {
+        var quotes = result.parse.text["*"];
+        var quoteArray = [];
+
+        var $lis = $(quotes).find("li:not(li li)");
+        $lis.each(function() {
+          $(this)
+            .children()
+            .remove(":not(b)");
+          var $bolds = $(this).find("b");
+
+          if ($bolds.length > 0) {
+            quoteArray.push($bolds.html());
+          } else {
+            quoteArray.push($(this).html());
+          }
+        });
+        success({ titles: result.parse.title, quotes: quoteArray });
+      },
+      error: function(xhr, result, status) {
+        error("Error getting quotes");
+      }
+    });
+  };
+
+  wqa.openSearch = function(titles, success, error) {
+    $.ajax({
+      url: API_URL,
+      dataType: "jsonp",
+      data: {
+        format: "json",
+        action: "opensearch",
+        namespace: 0,
+        suggest: "",
+        search: titles
+      },
+
+      success: function(result, status) {
+        success(result[1]);
+      },
+      error: function(xhr, result, status) {
+        error("Error with opensearch for " + titles);
+      }
+    });
+  };
+
+  wqa.getRandomQuote = function(titles, success, error) {
+    var errorFunction = function(msg) {
+      error(msg);
+    };
+
+    var chooseQuote = function(quotes) {
+      var randomNum = Math.floor(Math.random() * quotes.quotes.length);
+      success({ titles: quotes.titles, quote: quotes.quotes[randomNum] });
+    };
+
+    var getQuotes = function(pageId, sections) {
+      var randomNum = Math.floor(Math.random() * sections.sections.length);
+      wqa.getQuotesForSection(
+        pageId,
+        sections.sections[randomNum],
+        chooseQuote,
+        errorFunction
+      );
+    };
+
+    var getSections = function(pageId) {
+      wqa.getSectionsForPage(
+        pageId,
+        function(sections) {
+          getQuotes(pageId, sections);
+        },
+        errorFunction
+      );
+    };
+
+    wqa.queryTitles(titles, getSections, errorFunction);
+  };
+
+  wqa.getCompletelyRandomQuote = function(success, error) {
+    wqa.queryRandomTitle(function(title) {
+      wqa.getRandomQuote(title, success, error);
+    }, error);
+  };
+
+  wqa.capitalizeString = function(input) {
+    var inputArray = input.split(" ");
+    var output = [];
+    for (s in inputArray) {
+      output.push(
+        inputArray[s].charAt(0).toUpperCase() + inputArray[s].slice(1)
+      );
+    }
+    return output.join(" ");
+  };
+
+  return wqa;
+})();
 
 function loadQuotes(howManyRows) {
   //   https://quotesondesign.com/api-v4-0/
@@ -69,72 +276,83 @@ function loadQuotes(howManyRows) {
   // + '?' + Math.round(new Date().getTime() / 1000)
   // https://stackoverflow.com/questions/11456862/get-a-json-file-from-url-and-display?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
   for (var currentRow = 1; currentRow <= totalRows; currentRow++) {
-    $.getJSON(quoteAPItwo, function(data) {
-      console.log(data);
-      if (pixelsDown[1] >= dimensions[1]) {
-        // console.log("quotes completed");
-        return 0;
+    WikiquoteApi.queryRandomTitle(
+      function(title) {
+        WikiquoteApi.getRandomQuote(title, function(newQuote) {
+          quoteReady(newQuote);
+        });
+      },
+      function(msg) {
+        console.log(msg);
       }
-      var rowNum = countRows.toString();
-      var quote = data.quote + " -- " + data.author + " --&nbsp;";
-      if (quote.length <= 188 && quote.length >= 60) {
-        var heightOnPage = pixelsDown.pop();
+    );
 
-        sizeToAdd = getSize(quote.length);
-        // console.log(sizeToAdd);
-        // console.log(quote.length);
-        // console.log(sizeToAdd);
-        /*
-         * // TO DO replace if countrows odd or even with if ( $().hassClass ) then rows can move right or left randomly instead of every other
-         *    condence .toString() usage
-         */
-        if (countRows % 2 == 1) {
-          $("#css").append(
-            ".size" +
-              rowNum +
-              " { font-size: " +
-              sizeToAdd +
-              "px;} @keyframes moveMe-right" +
-              rowNum +
-              " { 0% { transform: translate(0, " +
-              heightOnPage +
-              "px); } 100% { transform: translate(110%, " +
-              heightOnPage +
-              "px); } }"
-          );
-          $("#row" + rowNum).html(quote);
-          // console.log(countRows.toString())
+  //   $.getJSON(quoteAPItwo, function(data) {
+  //     console.log(data);
+  //     if (pixelsDown[1] >= dimensions[1]) {
+  //       // console.log("quotes completed");
+  //       return 0;
+  //     }
+  //     var rowNum = countRows.toString();
+  //     var quote = data.quote + " -- " + data.author + " --&nbsp;";
+  //     if (quote.length <= 188 && quote.length >= 60) {
+  //       var heightOnPage = pixelsDown.pop();
 
-          $("#row" + rowNum + "b").html(quote);
-        } else if (countRows % 2 == 0) {
-          $("#css").append(
-            ".size" +
-              rowNum +
-              " { font-size: " +
-              sizeToAdd +
-              "px;} @keyframes moveMe" +
-              rowNum +
-              " { 0% { transform: translate(0, " +
-              heightOnPage +
-              "px); } 100% { transform: translate(-110%, " +
-              heightOnPage +
-              "px); } }"
-          );
-          $("#row" + rowNum).html(quote);
-          // console.log(countRows.toString())
+  //       sizeToAdd = getSize(quote.length);
+  //       // console.log(sizeToAdd);
+  //       // console.log(quote.length);
+  //       // console.log(sizeToAdd);
+  //       /*
+  //        * // TO DO replace if countrows odd or even with if ( $().hassClass ) then rows can move right or left randomly instead of every other
+  //        *    condence .toString() usage
+  //        */
+  //       if (countRows % 2 == 1) {
+  //         $("#css").append(
+  //           ".size" +
+  //             rowNum +
+  //             " { font-size: " +
+  //             sizeToAdd +
+  //             "px;} @keyframes moveMe-right" +
+  //             rowNum +
+  //             " { 0% { transform: translate(0, " +
+  //             heightOnPage +
+  //             "px); } 100% { transform: translate(110%, " +
+  //             heightOnPage +
+  //             "px); } }"
+  //         );
+  //         $("#row" + rowNum).html(quote);
+  //         // console.log(countRows.toString())
 
-          $("#row" + rowNum + "b").html(quote);
-        }
-        countRows += 1;
-        // pixelsDown += parseInt(sizeToAdd);
-        heightOnPage += parseInt(sizeToAdd);
-        pixelsDown.push(heightOnPage);
-        // console.log("row completed")
-      } else {
-        loadQuotes(1);
-      }
-    });
-  }
+  //         $("#row" + rowNum + "b").html(quote);
+  //       } else if (countRows % 2 == 0) {
+  //         $("#css").append(
+  //           ".size" +
+  //             rowNum +
+  //             " { font-size: " +
+  //             sizeToAdd +
+  //             "px;} @keyframes moveMe" +
+  //             rowNum +
+  //             " { 0% { transform: translate(0, " +
+  //             heightOnPage +
+  //             "px); } 100% { transform: translate(-110%, " +
+  //             heightOnPage +
+  //             "px); } }"
+  //         );
+  //         $("#row" + rowNum).html(quote);
+  //         // console.log(countRows.toString())
+
+  //         $("#row" + rowNum + "b").html(quote);
+  //       }
+  //       countRows += 1;
+  //       // pixelsDown += parseInt(sizeToAdd);
+  //       heightOnPage += parseInt(sizeToAdd);
+  //       pixelsDown.push(heightOnPage);
+  //       // console.log("row completed")
+  //     } else {
+  //       loadQuotes(1);
+  //     }
+  //   });
+  // }
   // var height = pixelsDown.pop();
   // if (height < dimensions[1]){
   //   pixelsDown.push(height);
