@@ -2,10 +2,10 @@ function randomIntRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 /*
-* TO DO work on smaller screen function
-* return var not direct math.round
-* amke screen selector smaller
-*/
+ * TO DO work on smaller screen function
+ * return var not direct math.round
+ * amke screen selector smaller
+ */
 var screenWidth = innerWidth;
 var screenHeight = innerHeight;
 var dimensions = [screenWidth, screenHeight];
@@ -58,7 +58,7 @@ function getSize(leng) {
 var sizeToAdd;
 var pixelsDown = [0, 0];
 var countRows = 1;
-var quoteAPItwo = "https://talaikis.com/api/quotes/random/";
+var quoteAPItwo = "http://quotes.rest/quote/random.json";
 
 function loadQuotes(howManyRows) {
   //   https://quotesondesign.com/api-v4-0/
@@ -70,6 +70,7 @@ function loadQuotes(howManyRows) {
   // https://stackoverflow.com/questions/11456862/get-a-json-file-from-url-and-display?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
   for (var currentRow = 1; currentRow <= totalRows; currentRow++) {
     $.getJSON(quoteAPItwo, function(data) {
+      console.log(data);
       if (pixelsDown[1] >= dimensions[1]) {
         // console.log("quotes completed");
         return 0;
@@ -84,9 +85,9 @@ function loadQuotes(howManyRows) {
         // console.log(quote.length);
         // console.log(sizeToAdd);
         /*
-          * // TO DO replace if countrows odd or even with if ( $().hassClass ) then rows can move right or left randomly instead of every other
-          *    condence .toString() usage
-          */
+         * // TO DO replace if countrows odd or even with if ( $().hassClass ) then rows can move right or left randomly instead of every other
+         *    condence .toString() usage
+         */
         if (countRows % 2 == 1) {
           $("#css").append(
             ".size" +
