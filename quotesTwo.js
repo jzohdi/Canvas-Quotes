@@ -362,77 +362,7 @@ function loadQuotes(howManyRows) {
     } catch (err) {
       console.log("API error message: " + err);
     }
-    // $.getJSON(quoteAPItwo, function(data) {
-    //   console.log(data);
-    //   if (pixelsDown[1] >= dimensions[1]) {
-    //     // console.log("quotes completed");
-    //     return 0;
-    //   }
-    //   var rowNum = countRows.toString();
-    //   var quote = data.quote + " -- " + data.author + " --&nbsp;";
-    //   if (quote.length <= 188 && quote.length >= 60) {
-    //     var heightOnPage = pixelsDown.pop();
-
-    //       sizeToAdd = getSize(quote.length);
-    //       // console.log(sizeToAdd);
-    //       // console.log(quote.length);
-    //       // console.log(sizeToAdd);
-    //       /*
-    //        * // TO DO replace if countrows odd or even with if ( $().hassClass ) then rows can move right or left randomly instead of every other
-    //        *    condence .toString() usage
-    //        */
-    //       if (countRows % 2 == 1) {
-    //         $("#css").append(
-    //           ".size" +
-    //             rowNum +
-    //             " { font-size: " +
-    //             sizeToAdd +
-    //             "px;} @keyframes moveMe-right" +
-    //             rowNum +
-    //             " { 0% { transform: translate(0, " +
-    //             heightOnPage +
-    //             "px); } 100% { transform: translate(110%, " +
-    //             heightOnPage +
-    //             "px); } }"
-    //         );
-    //         $("#row" + rowNum).html(quote);
-    //         // console.log(countRows.toString())
-
-    //         $("#row" + rowNum + "b").html(quote);
-    //       } else if (countRows % 2 == 0) {
-    //         $("#css").append(
-    //           ".size" +
-    //             rowNum +
-    //             " { font-size: " +
-    //             sizeToAdd +
-    //             "px;} @keyframes moveMe" +
-    //             rowNum +
-    //             " { 0% { transform: translate(0, " +
-    //             heightOnPage +
-    //             "px); } 100% { transform: translate(-110%, " +
-    //             heightOnPage +
-    //             "px); } }"
-    //         );
-    //         $("#row" + rowNum).html(quote);
-    //         // console.log(countRows.toString())
-
-    //         $("#row" + rowNum + "b").html(quote);
-    //       }
-    //       countRows += 1;
-    //       // pixelsDown += parseInt(sizeToAdd);
-    //       heightOnPage += parseInt(sizeToAdd);
-    //       pixelsDown.push(heightOnPage);
-    //       // console.log("row completed")
-    //     } else {
-    //       loadQuotes(1);
-    //     }
-    //   });
   }
-  // var height = pixelsDown.pop();
-  // if (height < dimensions[1]){
-  //   pixelsDown.push(height);
-  //   insert(1);
-  // }
 }
 /*
  *
@@ -535,7 +465,7 @@ if (
 ) {
   initrows = 90;
 } else {
-  initrows = 45;
+  initrows = 20;
 }
 insert(initrows);
 
