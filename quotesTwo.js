@@ -98,7 +98,7 @@ function loadQuotes(stopHeight) {
 
     if (quoteLength <= 188 && quoteLength >= 60) {
       const sizeToAdd = getSize(quoteLength);
-      console.log("currernt height: ", window.currentHeight);
+      // console.log("currernt height: ", window.currentHeight);
       if (window.countRows % 2 == 1) {
         const cssText = replaceEach(MOVE_RIGHT_CSS, [
           ["rowNum", countRows],
@@ -124,14 +124,6 @@ function loadQuotes(stopHeight) {
 
       window.currentHeight += parseInt(sizeToAdd);
     }
-    // else {
-    //   loadQuotes(1);
-    // }
-    // var height = pixelsDown.pop();
-    // if (height < dimensions[1]) {
-    //   pixelsDown.push(height);
-    //   insert(1);
-    // }
   }
 }
 /*
