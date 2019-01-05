@@ -1,26 +1,6 @@
 const heightOfPage = window.innerHeight;
 const MAX_QUOTE_INDEX = all_quotes.length;
-window.random = false;
-const API_TAG =
-  '<pre style="word-wrap: break-word; white-space: pre-wrap;">placeholder</pre>';
 
-const detectURI = () => {
-  const index = location.href.indexOf("?");
-  if (index != -1) {
-    const url = location.href.slice(index + 2);
-    if (url === "random") {
-      const randomQuote = JSON.stringify(
-        all_quotes[randomIntRange(0, MAX_QUOTE_INDEX)]
-      );
-      $("head").empty();
-      $("body").empty();
-      $("body").append(API_TAG.replace("placeholder", randomQuote));
-      window.random = true;
-    }
-  }
-};
-
-detectURI();
 function randomIntRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -37,7 +17,11 @@ const replaceEach = (startString, searchArray) => {
 const getRandomQuoteString = () => {
   const randomIndex = randomIntRange(0, MAX_QUOTE_INDEX);
   const newQuote = all_quotes[randomIndex];
-  return newQuote.author + "-- " + newQuote.quote + " --&nbsp;";
+  try {
+    return newQuote.author + "-- " + newQuote.quote + " --&nbsp;";
+  } catch (err) {
+    return getRandomQuoteString();
+  }
 };
 /*
  * TO DO work on smaller screen function
