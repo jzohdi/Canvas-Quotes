@@ -162,21 +162,34 @@ function init(pageRow, whichDirection) {
 const RIGHT_STYLE =
   ".moveMe-rightnumb" +
   " { margin: 0 auto; white-space: nowrap; display: inline-block; overflow: hidden; padding-right: 100%; animation: moveMe-right" +
-  "numb 20s infinite linear; position: absolute; right: 10%; } .moveTwonumb-right { animation-delay: 10s; }";
+  "numb seconds1s infinite linear; position: absolute; right: 10%; } .moveTwonumb-right { animation-delay: seconds2s; }";
 const LEFT_STYLE =
   ".moveMenumb" +
   " { margin: 0 auto; white-space: nowrap; display: inline-block; overflow: hidden; padding-left: 100%; animation: moveMe" +
-  "numb 26s infinite linear; position: absolute; } .moveTwonumb{ animation-delay: 13s; }";
+  "numb seconds1s infinite linear; position: absolute; } .moveTwonumb{ animation-delay: seconds2s; }";
 
 function initCSS(styleNum, whichDirection) {
   var docStyle = $("#css");
   // for (var style = 1; style <= styleNum; style++) {
   var numb = styleNum.toString();
+  let randomSeconds = randomIntRange(20, 50);
+  if (randomSeconds % 2 == 1) {
+    randomSeconds++;
+  }
+  const random2 = Math.floor(randomSeconds / 2);
   if (whichDirection == "right") {
-    const addStyle = replaceEach(RIGHT_STYLE, [["numb", numb]]);
+    const addStyle = replaceEach(RIGHT_STYLE, [
+      ["numb", numb],
+      ["seconds1", randomSeconds],
+      ["seconds2", random2]
+    ]);
     docStyle.append(addStyle);
   } else {
-    const addStyle = replaceEach(LEFT_STYLE, [["numb", numb]]);
+    const addStyle = replaceEach(LEFT_STYLE, [
+      ["numb", numb],
+      ["seconds1", randomSeconds],
+      ["seconds2", random2]
+    ]);
     docStyle.append(addStyle);
   }
   // }
