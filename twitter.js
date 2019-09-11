@@ -17,14 +17,11 @@ function tweetHandler() {
 function getQuote() {
   //   https://quotesondesign.com/api-v4-0/
   //   http://quotes.stormconsultancy.co.uk/api "http://quotes.stormconsultancy.co.uk/quotes/1.json?callback=my_method"
-  var quoteAPI =
-    "https://quotesondesign.com/wp-json/posts?               filter[orderby]=rand&filter[posts_per_page]=1" +
-    "?" +
-    Math.round(new Date().getTime() / 1000);
+  var quoteAPI = "https://j-zohdi.herokuapp.com/get_quotes/random";
   // console.log("fired");
-  $.getJSON(quoteAPI, function(data) {
+  $.get(quoteAPI, function(data) {
     console.log(data);
-    var quote = data[0].content;
+    var quote = data["quote"];
     // console.log(quote.length)
     $("#text").html(quote);
     currentQuoteLength = quote.length;
@@ -43,10 +40,11 @@ function getQuote() {
         $("#text").removeClass("small-text");
       }
     }
-    if (data[0].title === "") {
+    let html = data["author"] + ", Source: " + data["source"];
+    if (html) {
       $("#author").html("-- Unkown");
     } else {
-      $("#author").html("-- " + data[0].title);
+      $("#author").html("-- " + html);
     }
   });
 }
