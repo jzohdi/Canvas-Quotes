@@ -41,10 +41,10 @@ function getQuote() {
       }
     }
     let html = data["author"] + ", Source: " + data["source"];
-    if (html === ", Source: ") {
+    if (data["author"] + data["source"] === "") {
       $("#author").html("-- Unkown");
     } else {
-      $("#author").html("-- " + html);
+      $("#author").html("-- " + data["author"] + ", Source: " + data["source"]);
     }
   });
 }
