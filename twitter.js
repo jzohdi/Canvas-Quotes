@@ -41,7 +41,7 @@ function getQuote() {
       }
     }
     let html = data["author"] + ", Source: " + data["source"];
-    if (html) {
+    if (html === ", Source: ") {
       $("#author").html("-- Unkown");
     } else {
       $("#author").html("-- " + html);
